@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React</title>
+    <!-- BOOTSRTUP -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!-- REACT -->
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <div class="bg-primary">
+        <h1>Bootstrup</h1>
+        <button class="btn btn-warning">Button warning</button>
+        <button class="btn btn-danger">Button danger</button>
+        <button class="btn btn-info">Button info</button>
+        <button class="btn btn-success">Button success</button>
+    </div>
+    <script type="text/babel">
+        class Person {
+            constructor(name, age, hobbies, nationality) {
+                this.name = name;
+                this.age = age;
+                this.hobbies = hobbies;
+                this.nationality = nationality;
+            }
+        }
+
+        var people_list = [
+            new Person("Vasya", 31, "Programming, masturbating", "Ukraine"),
+            new Person("Müller", 18, "Sport, biology", "German"),
+            new Person("John", 25, "Dopping, drugs", "Australia")
+        ];
+
+        function PersonTag({ person }) {
+            const [age, setAge] = React.useState(person.age);
+            const increaseAge = () => {
+                setAge(prevAge => prevAge + 1);
+                person.age = prevAge;
+            };
+            const reduceAge = () => {
+                setAge(prevAge => prevAge - 1);
+                person.age = prevAge;
+            };
+
+            return (
+                <div>
+                    <h2>{person.name}</h2>
+                    <p>Age: <b>{age}</b></p>
+                    <p>Hobbies: <b>{person.hobbies}</b></p>
+                    <p>Nationality: <b>{person.nationality}</b></p>
+                    <button onClick={increaseAge} class="btn btn-primary">Age + 1</button>
+                    <button onClick={reduceAge} class="btn btn-secondary">Age - 1</button>
+                </div>
+            );
+        }
+
+        function PeopleList({ people }) {
+            return (
+                <div>
+                    {people.map((person) => (
+                        <PersonTag key={person.name} person={person} />
+                    ))}
+                </div>
+            );
+        }
+
+        ReactDOM.render(<PeopleList people={people_list} />, document.getElementById("root"));
+    </script>
+</body>
+</html>
