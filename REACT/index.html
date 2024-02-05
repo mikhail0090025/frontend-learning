@@ -4,73 +4,126 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>React</title>
-    <!-- BOOTSRTUP -->
+    <!-- BOOTSTRAP -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <!-- REACT -->
     <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+    <!-- OTHER -->
+    <style>
+        .new-pet {
+            border: 4px solid black;
+            border-radius: 40px;
+        }
+    </style>
 </head>
 <body>
+    <div class="container-fluid col-sm-12 col-md-6 col-lg-4 col-xl-3 new-pet p-5 form-group">
+        <h2>New pet</h2>
+        <div class="form-group">
+            <label for="Name" class="form-check-label">Name: </label><br>
+            <input type="text" name="Name" id="Name" value="Black"><br>
+        </div>
+        <div class="form-group">
+            <label for="Age" class="form-check-label">Age: </label><br>
+            <input type="number" name="Age" id="Age" min="0" max="20" value="7"><br>
+        </div>
+        <div class="form-group">
+            <label for="color" class="form-check-label">Color: </label><br>
+            <select name="color" id="color">
+                <option value="Black">Black</option>
+                <option value="Grey">Grey</option>
+                <option value="White" selected>White</option>
+                <option value="Ginger">Ginger</option>
+            </select>
+            <br><br>    
+        </div>
+        <button onclick="AddPet();" class="btn btn-primary">Add</button>
+    </div><br><br>
     <div id="root"></div>
-    <div class="bg-primary">
-        <h1>Bootstrup</h1>
-        <button class="btn btn-warning">Button warning</button>
-        <button class="btn btn-danger">Button danger</button>
-        <button class="btn btn-info">Button info</button>
-        <button class="btn btn-success">Button success</button>
-    </div>
     <script type="text/babel">
-        class Person {
-            constructor(name, age, hobbies, nationality) {
+        var COLOR = {
+            BLACK: "Black",
+            GREY: "Grey",
+            WHITE: "White",
+            GINGER: "Ginger"
+        };
+        class Dog {
+            constructor(name, age, color) {
                 this.name = name;
                 this.age = age;
-                this.hobbies = hobbies;
-                this.nationality = nationality;
+                this.color = color;
             }
         }
-
-        var people_list = [
-            new Person("Vasya", 31, "Programming, masturbating", "Ukraine"),
-            new Person("Müller", 18, "Sport, biology", "German"),
-            new Person("John", 25, "Dopping, drugs", "Australia")
+        var DogsList_ = [
+            new Dog("Bobik", 4, COLOR.BLACK),
+            new Dog("Tusik", 9, COLOR.GINGER),
+            new Dog("Sharik", 8, COLOR.WHITE),
+            new Dog("Rex", 5, COLOR.GREY),
+            new Dog("Bella", 3, COLOR.WHITE),
+            new Dog("Max", 7, COLOR.GINGER),
+            new Dog("Charlie", 2, COLOR.BLACK),
+            new Dog("Lola", 6, COLOR.GREY),
+            new Dog("Daisy", 4, COLOR.WHITE),
+            new Dog("Rocky", 10, COLOR.GINGER),
+            new Dog("Molly", 8, COLOR.BLACK),
+            new Dog("Oscar", 5, COLOR.GREY),
+            new Dog("Lucy", 4, COLOR.WHITE),
+            new Dog("Buddy", 6, COLOR.GINGER),
+            new Dog("Coco", 3, COLOR.BLACK)
         ];
-
-        function PersonTag({ person }) {
-            const [age, setAge] = React.useState(person.age);
-            const increaseAge = () => {
-                setAge(prevAge => prevAge + 1);
-                person.age = prevAge;
-            };
-            const reduceAge = () => {
-                setAge(prevAge => prevAge - 1);
-                person.age = prevAge;
-            };
-
+        
+        function AddPet() {
+            var new_dog = new Dog(document.getElementById("Name").value, document.getElementById("Age").value, document.getElementById("color").value);
+            DogsList_.push(new_dog);
+            ReactDOM.render(<DogsList Dogs={[...DogsList_, new_dog]} />, document.getElementById("root"));
+        }
+        
+        function DogTag({ dog, onRemoveDog }) {
+            const [age, setAge] = React.useState(dog.age);
+        
             return (
-                <div>
-                    <h2>{person.name}</h2>
-                    <p>Age: <b>{age}</b></p>
-                    <p>Hobbies: <b>{person.hobbies}</b></p>
-                    <p>Nationality: <b>{person.nationality}</b></p>
-                    <button onClick={increaseAge} class="btn btn-primary">Age + 1</button>
-                    <button onClick={reduceAge} class="btn btn-secondary">Age - 1</button>
+                <div className='col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3'>
+                    <div className='border p-4 m-1'>
+                        <div style={{ display: 'inline-block' }}>
+                            <h3 style={{ display: 'inline-block' }}>{dog.name}</h3>&nbsp;
+                            <button style={{ display: 'inline-block' }} className='btn btn-danger' onClick={onRemoveDog}>🗑️</button>
+                        </div><br /><br />
+                        <span>{age} years old</span>&nbsp;
+                        <button className='btn btn-secondary' onClick={() => { setAge(age - 1); dog.age--; }}>- year</button>&nbsp;
+                        <button className='btn btn-secondary' onClick={() => { setAge(age + 1); dog.age++; }}>+ year</button><br />
+                        <span>{dog.color} color</span>
+                    </div>
                 </div>
             );
         }
+        
+        function DogsList({ Dogs }) {
+            const [dogslist, setDogsList] = React.useState(Dogs);
+        
+            const handleRemoveDog = (removedDog) => {
+                setDogsList((prevDogsList) => prevDogsList.filter((dog) => dog !== removedDog));
+                DogsList_ = DogsList_.filter((dog) => dog !== removedDog);
+            };
 
-        function PeopleList({ people }) {
+            const handleNewDog = (newDog) => {
+                setDogsList((prevDogsList) => [...prevDogsList, newDog]);
+            };
+        
             return (
-                <div>
-                    {people.map((person) => (
-                        <PersonTag key={person.name} person={person} />
+                <div className='container-fluid row'>
+                    {dogslist.map((dog, index) => (
+                        <DogTag dog={dog} key={index} onRemoveDog={() => handleRemoveDog(dog)} />
                     ))}
                 </div>
             );
         }
-
-        ReactDOM.render(<PeopleList people={people_list} />, document.getElementById("root"));
+        
+        ReactDOM.render(<DogsList Dogs={DogsList_} />, document.getElementById("root"));
+        let log_ = function () { console.log(DogsList_.length); };
+        setInterval(log_, 200);
     </script>
 </body>
 </html>

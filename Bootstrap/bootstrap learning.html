@@ -18,7 +18,11 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <style>
         .hidden-block{
-            display: none;
+            display: none !important;
+        }
+        div:not(div > div){
+            display: block;
+            width: 90%;
         }
     </style>
 </head>
@@ -184,21 +188,22 @@
                 <label for="surname" class="form-check-label">Surname: </label>
                 <input type="text" id="surname" name="surname" class="form-control"><br>
             </div>
-            <div class="form-group">
+            <div class="form-group form-check-inline">
                 <label class="form-check-label">Age: </label><br>
                 <div class="form-check">
-                    <input type="radio" name="age" id="under14">
+                    <input type="radio" name="age" id="under14" class="form-check-input">
                     <label for="under14" class="form-check-label">Under 14</label><br>
                 </div>
                 <div class="form-check">
-                    <input type="radio" name="age" id="between14and18">
+                    <input type="radio" name="age" id="between14and18" class="form-check-input">
                     <label for="between14and18" class="form-check-label">14 - 18</label><br>
                 </div>
                 <div class="form-check">
-                    <input type="radio" name="age" id="over18">
+                    <input type="radio" name="age" id="over18" class="form-check-input">
                     <label for="over18" class="form-check-label">Over 18</label><br>
                 </div>
-                </div>
+            </div>
+            <br>
             <input type="submit" class="btn btn-success">
             <input type="reset" value="Reset" class="btn btn-warning">
         </form>
